@@ -2,6 +2,7 @@ package com.balotiyash.vespolytechnic
 
 import android.annotation.SuppressLint
 import android.view.animation.OvershootInterpolator
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,8 +22,16 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.airbnb.lottie.LottieComposition
 import com.balotiyash.vespolytechnic.ui.theme.VESPolytechnicTheme
 import kotlinx.coroutines.delay
+import  androidx.compose.runtime.getValue
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionResult
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
+import java.io.InputStream
 
 @Composable
 fun Navigation() {
@@ -30,6 +39,7 @@ fun Navigation() {
     NavHost(navController = navController, startDestination = "splashScreen") {
         composable("splashScreen") {
             SplashScreen(navController = navController)
+            Loader()
         }
         composable("mainScreen") {
             Box(
@@ -49,7 +59,7 @@ fun Navigation() {
 @Composable
 fun SplashScreen(navController: NavController) {
     val scale = remember {
-        androidx.compose.animation.core.Animatable(0f)
+        Animatable(0f)
     }
     LaunchedEffect(key1 = true) {
         scale.animateTo(
@@ -67,14 +77,31 @@ fun SplashScreen(navController: NavController) {
     Box(contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Yellow)
+            .background(Color.LightGray)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ves_logo_circle),
+            painter = painterResource(id = R.drawable.untitled_design__2__removebg_pre),
             contentDescription = "SplashLogo",
             modifier = Modifier.scale(scale.value)
         )
     }
+}
+
+@Composable
+fun Loader() {
+    val compositionResult: LottieCompositionResult =
+        rememberLottieComposition(
+        LottieCompositionSpec.Asset(
+            "1.json"
+        )
+    )
+    val progress by animateLottieCompositionAsState(
+        compositionResult.value,
+        isPlaying = true,
+        iterations = 1,
+        speed = 1.0f
+    )
+    LottieAnimation(compositionResult.value, progress)
 }
 
 @Preview(
