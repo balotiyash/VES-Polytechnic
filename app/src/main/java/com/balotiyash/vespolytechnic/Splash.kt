@@ -8,7 +8,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -22,16 +21,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.airbnb.lottie.LottieComposition
 import com.balotiyash.vespolytechnic.ui.theme.VESPolytechnicTheme
 import kotlinx.coroutines.delay
-import  androidx.compose.runtime.getValue
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionResult
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
-import java.io.InputStream
 
 @Composable
 fun Navigation() {
@@ -39,7 +30,7 @@ fun Navigation() {
     NavHost(navController = navController, startDestination = "splashScreen") {
         composable("splashScreen") {
             SplashScreen(navController = navController)
-            Loader()
+//            Loader()
         }
         composable("mainScreen") {
             Box(
@@ -47,9 +38,10 @@ fun Navigation() {
                     .fillMaxSize(),
                     contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = "Yash"
-                )
+//                Text(
+//                    text = "Yash"
+//                )
+                DashboardScroll()
             }
         }
     }
@@ -61,6 +53,7 @@ fun SplashScreen(navController: NavController) {
     val scale = remember {
         Animatable(0f)
     }
+    val col = R.color.VESLightYellow
     LaunchedEffect(key1 = true) {
         scale.animateTo(
             targetValue = 0.4f,
@@ -72,40 +65,41 @@ fun SplashScreen(navController: NavController) {
             )
         )
         delay(3500L)
+        navController.popBackStack()
         navController.navigate("mainScreen")
     }
     Box(contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.LightGray)
+            .background(color = Color(0xFFFFD93D))
     ) {
         Image(
-            painter = painterResource(id = R.drawable.untitled_design__2__removebg_pre),
+            painter = painterResource(id = R.drawable.ves_logo_c1__1_),
             contentDescription = "SplashLogo",
             modifier = Modifier.scale(scale.value)
         )
     }
 }
 
-@Composable
-fun Loader() {
-    val compositionResult: LottieCompositionResult =
-        rememberLottieComposition(
-        LottieCompositionSpec.Asset(
-            "1.json"
-        )
-    )
-    val progress by animateLottieCompositionAsState(
-        compositionResult.value,
-        isPlaying = true,
-        iterations = 1,
-        speed = 1.0f
-    )
-    LottieAnimation(compositionResult.value, progress)
-}
+//@Composable
+//fun Loader() {
+//    val compositionResult: LottieCompositionResult =
+//        rememberLottieComposition(
+//        LottieCompositionSpec.Asset(
+//            "polytechnictext.json"
+//        )
+//    )
+//    val progress by animateLottieCompositionAsState(
+//        compositionResult.value,
+//        isPlaying = true,
+//        iterations = 1,
+//        speed = 1.0f
+//    )
+//    LottieAnimation(compositionResult.value, progress)
+//}
 
 @Preview(
-    showBackground = true,
+    showBackground = false,
     showSystemUi = true,
     name = "Splash"
 )
